@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang='en'>
+    <head>
+        <meta charset='utf-8'>
+        <title>Portfolio Site - Projects</title>
+
+        <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@500&display=swap" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono&display=swap" rel="stylesheet">
+        <link href='../../css/style.css' rel='stylesheet' type='text/css'>
+
+        <script src="https://cdn.jsdelivr.net/npm/p5@1.1.9/lib/p5.js"></script>
+        <script src='../../javascript/lightning.js'></script>
+
+        <script src='../../javascript/headerBuilder.js'></script>
+    </head>
+
+    <body>
+        <header class='header'>
+            <script>buildHeader('../..', 'header');</script>
+        </header>
+        <!-- Main body -->
+        <main>
+            <h1 class='title'>Lightning</h1>
+            <div id='p5-lightning-container'></div>
+            <p>
+                One of the challenges I had during this project was determining how each segment of the lightning bolt’s length, angle, and strokeWeight would be determined. I decided it would be interesting to leave this up to the caller of the function that draws the bolt. The function can be supplied three other functions as arguments to control each of the three properties (length, angle, and strokeWeight). This was easy to use and experiment with in p5 by using lambda expressions, but it required some more work to convert to Java because the current version of Processing doesn’t support lambdas.
+            </p>
+        </main>
+    </body>
+</html>

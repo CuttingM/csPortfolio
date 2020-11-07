@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang='en'>
+    <head>
+        <meta charset='utf-8'>
+        <title>Portfolio Site - Projects</title>
+
+        <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@500&display=swap" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono&display=swap" rel="stylesheet">
+        <link href='../../css/style.css' rel='stylesheet' type='text/css'>
+
+        <script src="https://cdn.jsdelivr.net/npm/p5@1.1.9/lib/p5.js"></script>
+        <script src='../../javascript/dice.js'></script>
+
+        <script src='../../javascript/headerBuilder.js'></script>
+    </head>
+
+    <body>
+        <header class='header'>
+            <script>buildHeader('../..', 'header');</script>
+        </header>
+        <!-- Main body -->
+        <main>
+            <h1 class='title'>Dice</h1>
+            <div id='p5-dice-container'></div>
+            <p>
+                One of the challenges I encountered during this project was determining how to display the correct side of each die once the dice are rolled. Ultimately, my solution was to define a method of the Die class that rotates the die to the correct side given a number from 1 to 6 inclusive. I used a switch statement to test the number and then set the die’s rotation appropriately.
+            </p>
+        </main>
+    </body>
+</html>

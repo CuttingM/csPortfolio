@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang='en'>
+    <head>
+        <meta charset='utf-8'>
+        <title>Portfolio Site - Projects</title>
+
+        <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@500&display=swap" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono&display=swap" rel="stylesheet">
+        <link href='../../css/style.css' rel='stylesheet' type='text/css'>
+
+        <script src="https://cdn.jsdelivr.net/npm/p5@1.1.9/lib/p5.js"></script>
+        <script src='../../javascript/digitalScene.js'></script>
+
+        <script src='../../javascript/headerBuilder.js'></script>
+    </head>
+
+    <body>
+        <header class='header'>
+            <script>buildHeader('../..', 'header');</script>
+        </header>
+        <!-- Main body -->
+        <main>
+            <h1 class='title'>Digital Scene</h1>
+            <div id='p5-digitalScene-container'></div>
+            <p>
+              One problem I had was trying to determine the best way of producing somewhat realistic terrain. In order to do this, I had to use Processing’s noise function, which generates Perlin noise. I used this Perlin noise to get the terrain “height” at each pixel on the screen. From this height, I created a function called getColorFromHeight that returns a color representing the terrain. For example, a height value of less than 0.42 returns a blue color that represents water. Another problem I had was with performance. Getting the noise value and drawing a color at every pixel caused the program to be unbearably slow. I remedied this somewhat by defining a pixelSize, which allowed me to decrease the number of pixels by making them larger on the screen (using Processing’s scale function).
+            </p>
+        </main>
+    </body>
+</html>
