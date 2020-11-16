@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang='en'>
+    <head>
+        <meta charset='utf-8'>
+        <title>Portfolio Site - Projects</title>
+
+        <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@500&display=swap" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono&display=swap" rel="stylesheet">
+        <link href='../../css/style.css' rel='stylesheet' type='text/css'>
+
+        <script src="https://cdn.jsdelivr.net/npm/p5@1.1.9/lib/p5.js"></script>
+        <script src='../../javascript/chemotaxis.js'></script>
+
+        <script src='../../javascript/headerBuilder.js'></script>
+    </head>
+
+    <body>
+        <header class='header'>
+            <script>buildHeader('../..', 'header');</script>
+        </header>
+        <!-- Main body -->
+        <main>
+            <h1 class='title'>Chemotaxis</h1>
+            <div id='p5-chemotaxis-container'></div>
+            <p>
+                One problem I had during the creation of this project was trying to determine how multiple particles would interact. I decided that this would involve two things: an “attract” method in the Particle class and an “update” method in the World class (which contains the particles) that attracts each particle to every other one. In the “attract” method, I define how a particle accelerates toward a single other particle (using both gravitational and Coulombic forces for variety). The “update” method then iterates through every particle and calls the “attract” method between each pair of particles. In total, this results in quite interesting behavior.
+            </p>
+        </main>
+    </body>
+</html>

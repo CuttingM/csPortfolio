@@ -29,6 +29,7 @@ let p5_dice = new p5(p => {
     }
 
     p.draw = () => {
+        if(!rangeCheck(p)) return;
         currTimeMillis = p.millis();
 
         p.background(0);
@@ -249,5 +250,12 @@ let p5_dice = new p5(p => {
 
             p.pop();
         }
+    }
+
+    const rangeCheck = p => {
+        return 0 <= p.mouseX
+               && p.mouseX < p.width
+               && 0 <= p.mouseY
+               && p.mouseY < p.height;
     }
 });
