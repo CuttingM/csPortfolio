@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang='en'>
+    <head>
+        <meta charset='utf-8'>
+        <title>Portfolio Site - Projects</title>
+
+        <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@500&display=swap" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono&display=swap" rel="stylesheet">
+        <link href='../../css/style.css' rel='stylesheet' type='text/css'>
+
+        <script src="https://cdn.jsdelivr.net/npm/p5@1.1.9/lib/p5.js"></script>
+        <script src='../../javascript/starfield.js'></script>
+
+        <script src='../../javascript/headerBuilder.js'></script>
+    </head>
+
+    <body>
+        <header class='header'>
+            <script>buildHeader('../..', 'header');</script>
+        </header>
+        <!-- Main body -->
+        <main>
+            <h1 class='title'>Starfield</h1>
+            <div id='p5-starfield-container'></div>
+            <p>
+                The main problem I had while working on this project was trying to decide how the particles would move. For the NormalParticle and JumboParticle classes, I had them orbit in a circular motion using the sin and cos functions. For the OddballParticle class, I made the particles move outwards from the center of the screen while also looping in small circles. However, the issue with this idea is that they would eventually move off of the screen and never return. To fix this, I added an “if” condition in the OddballParticle’s “move” function to test if the particle’s distance to the center is greater than the distance from the center to the corner of the screen. If the condition is met, the particle’s position is reset to zero, and it’s movement angle is set such that it still follows a visually interesting path of motion.
+            </p>
+        </main>
+    </body>
+</html>

@@ -28,6 +28,9 @@ const buildHeader = (rootDir, headerClass) => {
                     <li class='navbar-item'>
                         <a href='${rootDir}/pages/projects/chemotaxis.html'>Chemotaxis</a>
                     </li>
+                    <li class='navbar-item'>
+                        <a href='${rootDir}/pages/projects/starfield.html'>Starfield</a>
+                    </li>
                     <li class='navbar-item has-submenu'>
                         <a>Data Structures</a>
                         <ul class='navbar-submenu'>
