@@ -19,7 +19,9 @@
         <main>
             <h1 class='title'>Text Info</h1>
             <form method='GET'>
-                <label for='text-field'>Enter some text (or a URL) below:</br></label>
+                <label for='text-field'>Enter some text below:</br></label>
+                <!-- The url option doesn't work at the moment-->
+                <!--
                 <select name='url-or-text'>
                     <option value='text'>
                         Text
@@ -28,6 +30,7 @@
                         URL
                     </option>
                 </select><br>
+                -->
                 <textarea id='text-field' name='text-field' style='width: 100%; height: 2in; overflow: scroll'></textarea>
                 <input type='submit' id='regex-submit'></input>
             </form>
@@ -73,6 +76,7 @@
         }
 
         const printText = text => {
+            if (text == '') return;
             const results = document.getElementById('results');
             results.innerHTML += '<h2>Here\'s some info about the text you submitted:</h2>';
             const parser = new StringParser(text);
@@ -83,47 +87,43 @@
             const readingEase = parser.readingEase();
             const gradeLevel = parser.gradeLevel();
 
+            const decimalPlaces = 2;
+
             results.innerHTML += `<p>Total words: ${words}</p>`;
             results.innerHTML += `<p>Total vowels: ${vowels}</p>`;
             results.innerHTML += `<p>Total syllables: ${syllables}</p>`;
             results.innerHTML += `<p>Total sentences: ${sentences}</p>`;
 
             if (words != 0) {
-                results.innerHTML += `<p>Average vowels per word: ${vowels / words}</p>`;
-                results.innerHTML += `<p>Average syllables per word: ${syllables / words}</p>`;
+                results.innerHTML += `<p>Average vowels per word: ${(vowels / words).toFixed(decimalPlaces)}</p>`;
+                results.innerHTML += `<p>Average syllables per word: ${(syllables / words).toFixed(decimalPlaces)}</p>`;
             }
             if (sentences != 0) {
-                results.innerHTML += `<p>Average syllables per sentence: ${syllables / sentences}</p>`;
-                results.innerHTML += `<p>Average words per sentence: ${words / sentences}</p>`;
+                results.innerHTML += `<p>Average syllables per sentence: ${(syllables / sentences).toFixed(decimalPlaces)}</p>`;
+                results.innerHTML += `<p>Average words per sentence: ${(words / sentences).toFixed(decimalPlaces)}</p>`;
             }
 
             if (words != 0 && sentences != 0) {
-                results.innerHTML += `<p>Flesch readability score: ${readingEase}</p>`;
-                results.innerHTML += `<p>Fkesch-Kincaid grade level: ${gradeLevel}</p>`;
+                results.innerHTML += `<p>Flesch readability score: ${readingEase.toFixed(decimalPlaces)}</p>`;
+                results.innerHTML += `<p>Fkesch-Kincaid grade level: ${gradeLevel.toFixed(decimalPlaces)}</p>`;
             }
         }
 
         const params = new URLSearchParams(window.location.search);
+        printText(params.get('text-field') || '');
+
+        /*
         let text = '';
 
         if (params.get('url-or-text') == 'url') {
             const url = params.get('text-field');
             let response = fetch(url, {mode: 'cors'})
                 .then(response => response.arrayBuffer())
-                .then(text => {
-                    printText(text)
-                });
+                .then(text => printText(text));
         } else {
             text = params.get('text-field') || '';
             printText(text);
         }
-
-
-        /*
-        .forEach((value, key) => {
-            if (key != 'text-field' || value == '') return;
-            const text = '';
-        });
         */
     </script>
 </html>
