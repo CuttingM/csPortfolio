@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang='en'>
+    <head>
+        <meta charset='utf-8'>
+        <title>Portfolio Site - Projects</title>
+
+        <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@500&display=swap" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono&display=swap" rel="stylesheet">
+        <link href='../../css/style.css' rel='stylesheet' type='text/css'>
+
+        <script src='../../javascript/headerBuilder.js'></script>
+    </head>
+
+    <body>
+        <header class='header'>
+            <script>buildHeader('../..', 'header');</script>
+        </header>
+        <!-- Main body -->
+        <main>
+            <h1 class='title'>Text Info</h1>
+            <form method='GET'>
+                <label for='text-field'>Enter some text (or a URL) below:</br></label>
+                <select name='url-or-text'>
+                    <option value='text'>
+                        Text
+                    </option>
+                    <option value='url'>
+                        URL
+                    </option>
+                </select><br>
+                <textarea id='text-field' name='text-field' style='width: 100%; height: 2in; overflow: scroll'></textarea>
+                <input type='submit' id='regex-submit'></input>
+            </form>
+            <div id='results' style='border-radius: 10px; background-color: var(--main-color); margin: 10px;'></div>
+        </main>
+    </body>
+
+    <script>
+        class StringParser {
+            constructor(text) {
+                this.text = text || '';
+            }
+
+            countWords() {
+                return this.countMatches(/[A-Za-z]+/g);
+            }
+
+            countVowels() {
+                return this.countMatches(/[AEIOUYaeiouy]/g)
+            }
+
+            countSyllables() {
+                return this.countMatches(/[AEIOUYaeiouy]+[^AEIOUyaeiouy]+[Ee]\\b|[AEIOUYaeiouy]+/g);
+            }
+
+            countSentences() {
+                return this.countMatches(/[\.!?]/g);
+            }
+
+            readingEase() {
+                const words = this.countWords();
+                return 206.835 - 1.015 * (words / this.countSentences()) - 84.6 * (this.countSyllables() / words);
+            }
+
+            gradeLevel() {
+                const words = this.countWords();
+                return 0.39 * (words / this.countSentences()) + 11.8 * (this.countSyllables() / words) - 15.59;
+            }
+
+            countMatches(pattern) {
+                return (this.text.match(pattern) || []).length;
+            }
+        }
+
+        const printText = text => {
+            const results = document.getElementById('results');
+            results.innerHTML += '<h2>Here\'s some info about the text you submitted:</h2>';
+            const parser = new StringParser(text);
+            const words = parser.countWords();
+            const vowels = parser.countVowels();
+            const syllables = parser.countSyllables();
+            const sentences = parser.countSentences();
+            const readingEase = parser.readingEase();
+            const gradeLevel = parser.gradeLevel();
+
+            results.innerHTML += `<p>Total words: ${words}</p>`;
+            results.innerHTML += `<p>Total vowels: ${vowels}</p>`;
+            results.innerHTML += `<p>Total syllables: ${syllables}</p>`;
+            results.innerHTML += `<p>Total sentences: ${sentences}</p>`;
+
+            if (words != 0) {
+                results.innerHTML += `<p>Average vowels per word: ${vowels / words}</p>`;
+                results.innerHTML += `<p>Average syllables per word: ${syllables / words}</p>`;
+            }
+            if (sentences != 0) {
+                results.innerHTML += `<p>Average syllables per sentence: ${syllables / sentences}</p>`;
+                results.innerHTML += `<p>Average words per sentence: ${words / sentences}</p>`;
+            }
+
+            if (words != 0 && sentences != 0) {
+                results.innerHTML += `<p>Flesch readability score: ${readingEase}</p>`;
+                results.innerHTML += `<p>Fkesch-Kincaid grade level: ${gradeLevel}</p>`;
+            }
+        }
+
+        const params = new URLSearchParams(window.location.search);
+        let text = '';
+
+        if (params.get('url-or-text') == 'url') {
+            const url = params.get('text-field');
+            let response = fetch(url, {mode: 'cors'})
+                .then(response => response.arrayBuffer())
+                .then(text => {
+                    printText(text)
+                });
+        } else {
+            text = params.get('text-field') || '';
+            printText(text);
+        }
+
+
+        /*
+        .forEach((value, key) => {
+            if (key != 'text-field' || value == '') return;
+            const text = '';
+        });
+        */
+    </script>
+</html>

@@ -43,7 +43,8 @@ h1 {
 }
 
 h2 {
-    text-indent: 2em;
+    /* text-indent: 2em; */
+    text-align: center;
 
     animation: var(--anim-slide-in);
 }
