@@ -45,7 +45,7 @@
             }
 
             countWords() {
-                return this.countMatches(/[A-Za-z]+/g);
+                return this.countMatches(/[A-Za-z'-]+/g);
             }
 
             countVowels() {
@@ -111,19 +111,5 @@
 
         const params = new URLSearchParams(window.location.search);
         printText(params.get('text-field') || '');
-
-        /*
-        let text = '';
-
-        if (params.get('url-or-text') == 'url') {
-            const url = params.get('text-field');
-            let response = fetch(url, {mode: 'cors'})
-                .then(response => response.arrayBuffer())
-                .then(text => printText(text));
-        } else {
-            text = params.get('text-field') || '';
-            printText(text);
-        }
-        */
     </script>
 </html>
