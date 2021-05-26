@@ -85,7 +85,13 @@ const buildHeader = (rootDir, headerClass) => {
                         <a>
                             Data Structures
                         </a>
-                        <ul class='navbar-submenu'></ul>
+                        <ul class='navbar-submenu'>
+                            <li class='navbar-item'>
+                                <a href='${rootDir}/pages/projects/graphVisualization.html'>
+                                    Graph Visualization
+                                </a>
+                            </li>
+                        </ul>
                     </li>
                 </ul>
             </li>
