@@ -1,6 +1,12 @@
 const buildHeader = (rootDir, headerClass) => {
-    let header = document.querySelector(headerClass);
-    header.innerHTML += `
+    /*
+    const headers = document.getElementsByClassName(headerClass)
+    for (let i = 0; i != headers.length; ++i) {
+        headers.item(i)
+    */
+    document.querySelectorAll(headerClass)
+        .forEach(header => {
+            header.innerHTML += `
     <nav>
         <div class='name'>
             Mason Cutting
@@ -68,6 +74,11 @@ const buildHeader = (rootDir, headerClass) => {
                                     Text Info
                                 </a>
                             </li>
+                            <li class='navbar-item'>
+                                <a href='${rootDir}/pages/projects/syntaxHighlighterDemo.html'>
+                                    Syntax Highlighter Demo
+                                </a>
+                            </li>
                         </ul>
                     </li>
                     <li class='navbar-item has-submenu'>
@@ -88,5 +99,6 @@ const buildHeader = (rootDir, headerClass) => {
     <div class='banner'>
         <div class='banner-image'></div>
     </div>
-    `
+`
+});
 }

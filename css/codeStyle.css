@@ -1,0 +1,10 @@
+.code {
+    font-family: 'Roboto Mono', monospace;
+    background-color: #313;
+    color: #fff;
+    border-radius: 5px;
+    padding: 1em;
+    /* width: 50%;
+    margin: 1em auto; */
+    overflow: auto;
+}

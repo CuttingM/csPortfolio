@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang='en'>
+    <head>
+        <meta charset='utf-8'>
+        <title>Portfolio Site - Projects</title>
+
+        <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@500&display=swap" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono&display=swap" rel="stylesheet">
+        <link href='../../css/style.css' rel='stylesheet' type='text/css'>
+        <link href='../../css/codeStyle.css' rel='stylesheet' type='text/css'>
+
+        <script src='../../javascript/headerBuilder.js'></script>
+
+        <script defer src='../../javascript/syntaxHighlighter/syntaxHighlighter.js'></script>
+        <script defer src='../../javascript/syntaxHighlighter/javaColor.js'></script>
+        <script defer src='../../javascript/syntaxHighlighter/luaColor.js'></script>
+        <script defer src='../../javascript/syntaxHighlighter/pyColor.js'></script>
+    </head>
+
+    <body>
+        <script defer>
+            // const header = document.querySele
+        </script>
+        <header class='header'>
+            <script>buildHeader('../..', 'header');</script>
+        </header>
+        <!-- Main body -->
+        <main>
+            <p>
+                This is a demo of a small project that I made in my spare time. It uses regular expressions to color html code according to the syntax of a programming language. Below, I use it with Java.
+            </p>
+            <h2>Java</h2>
+            <pre class='code java-code'>
+public class Test {
+    public static void main(String[] args) {
+        System.out.println("Hello, world!");
+    }
+}
+            </pre>
+            <p>
+                The above code is generated from the following HTML. The 'code' class adds general formatting for the code, whereas 'java-code' adds syntax highlighting specific to Java.
+            </p>
+            <pre>
+&lt;pre class='code java-code'&gt;=
+public class Test {
+    public static void main(String[] args) {
+        System.out.println("Hello, world!");
+    }
+}
+&lt;/pre&gt;
+            </pre>
+            <p>So far, it can be used with Java, Lua, and Python.</p>
+            <h2>Lua</h2>
+            <pre class='code lua-code'>
+-- This is a Lua comment
+
+--[[
+    This is a multiline comment
+]]
+
+local a, b = 'Hello, ', 'world!';
+
+-- Prints 'Hello, world!'
+print(a .. b);
+
+lua_table = {
+    a = 1,
+    b = 2,
+    f = function(self)
+        return self.a + self.b;
+    end,
+    array = { 1, 2, 3, 4, 5, 6, 7 }
+}
+
+-- Prints '3' (lua_table.a + lua_table.b)
+print(lua_table:f())
+
+-- Iteration over an array
+for index, element in ipairs(lua_table.array) do
+    print(index, element);
+end
+            </pre>
+            <h2>Python</h2>
+            <pre class='code py-code'>
+from typing import List
+
+
+def quicksort(arr: List) -> List:
+    if len(arr) <= 1:
+        return arr
+
+    pivot = arr[len(arr) // 2]
+
+    left = [n for n in arr if n < pivot]
+    middle = [n for n in arr if n == pivot]
+    right = [n for n in arr if n > pivot]
+
+    return quicksort(left) + middle + quicksort(right)
+
+
+my_list = [5, 4, 3, 2, 1]
+
+assert quicksort(my_list) == [1, 2, 3, 4, 5]
+            </pre>
+        </main>
+    </body>
+</html>
