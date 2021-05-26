@@ -97,7 +97,7 @@ const buildHeader = (rootDir, headerClass) => {
             </li>
             <li class='navbar-item'>
                 <a href='${rootDir}/pages/deepThoughts.html'>
-                    Deep Thoughts
+                    Notebook
                 </a>
             </li>
         </ul>
