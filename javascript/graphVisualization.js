@@ -1,7 +1,7 @@
 const p5_graphVisualization = new p5(p => {
     let graph;
     let lastNode;
-    let i = 1;
+    let nodeValue = 1;
 
     let draggedNode = null;
     let isDragging = false;
@@ -40,28 +40,57 @@ const p5_graphVisualization = new p5(p => {
             breadth: 'g',
             end: 'v',
         },
+        other: {
+            reset: 'b',
+            undo: 'u',
+        }
     }
     const stateOf = b => b ? 'on' : 'off';
     let traversalStack;
+    let undoStack;
 
     let traversalIterator = null;
 
     p.setup = () => {
-        p.createCanvas(700, 700);
+        p.canvas = p.createCanvas(1280, 720);
+        p.canvas.id('p5-graphVisualization')
+        p.canvas.parent('p5-graphVisualization-container');
+
         p.background(0, 255, 0);
 
-        lastNode = new NodeDot(p.width / 2, p.height / 2, 0);
-
-        graph = new Graph(lastNode.graphNode);
-
         traversalStack = new ContextManagedStack(
-            item => {
-                item.color = 'red';
+            node => {
+                node.color = 'red';
             },
-            item => {
-                item.color = 'white';
+            node => {
+                node.color = 'white';
             },
         );
+        undoStack = new ContextManagedStack(
+            ({parent, child, isNew, isDirected}) => {
+                if (isNew) {
+                    ++nodeValue;
+                }
+                if (isDirected) {
+                    parent.add(child);
+                } else {
+                    parent.undirectedAdd(child);
+                }
+            },
+            ({parent, child, isNew, isDirected}) => {
+                if (isNew) {
+                    --nodeValue;
+                }
+                if (isDirected) {
+                    parent.remove(child);
+                } else {
+                    parent.undirectedRemove(child);
+                }
+                lastNode = parent;
+            },
+        );
+
+        resetGraph();
     };
 
     p.draw = () => {
@@ -95,6 +124,8 @@ const p5_graphVisualization = new p5(p => {
                 `E to toggle edge visibility [${stateOf(edgesVisible)}]`,
                 `R to toggle edge direction visibility [${stateOf(isDirected)}]`,
                 `H to toggle this help message [${stateOf(showHelp)}]`,
+                'B to reset the graph',
+                'U to undo an action',
             ];
 
             p.fill(0);
@@ -156,6 +187,12 @@ const p5_graphVisualization = new p5(p => {
             advanceBreadthFirst();
         } else if (p.key == keys.traverse.end) {
             endTraversal();
+        } else if (p.key == keys.other.reset) {
+            resetGraph();
+        } else if (p.key == keys.other.undo) {
+            if (!undoStack.empty()) {
+                undoStack.pop();
+            }
         }
     };
 
@@ -173,17 +210,21 @@ const p5_graphVisualization = new p5(p => {
 
                 if (connectedNode != null) {
                     if (p.key == keys.connect.dir) {
-                        connectorNode.add(connectedNode);
+                        // connectorNode.add(connectedNode);
+                        addNode(connectorNode, connectedNode, false);
                     } else if (p.key == keys.connect.und) {
-                        connectorNode.undirectedAdd(connectedNode);
+                        // connectorNode.undirectedAdd(connectedNode);
+                        undirectedAddNode(connectorNode, connectedNode, false);
                     }
                 } else {
-                    const newNode = new NodeDot(p.mouseX, p.mouseY, i++);
+                    const newNode = new NodeDot(p.mouseX, p.mouseY, nodeValue);
 
                     if (p.key == keys.connect.dir) {
-                        connectorNode.add(newNode);
+                        // connectorNode.add(newNode);
+                        addNode(connectorNode, newNode, true);
                     } else if (p.key == keys.connect.und) {
-                        connectorNode.undirectedAdd(newNode);
+                        // connectorNode.undirectedAdd(newNode);
+                        undirectedAddNode(connectorNode, newNode, true);
                     }
 
                     lastNode = newNode;
@@ -191,18 +232,22 @@ const p5_graphVisualization = new p5(p => {
                 isConnecting = false;
             }
         } else if (p.keyIsPressed) {
-            const newNode = new NodeDot(p.mouseX, p.mouseY, i++);
+            const newNode = new NodeDot(p.mouseX, p.mouseY, nodeValue);
             if (p.key == keys.after.dir || p.key == keys.after.und) {
                 if (p.key == keys.after.dir) {
-                    lastNode.add(newNode);
+                    // lastNode.add(newNode);
+                    addNode(lastNode, newNode, true);
                 } else {
-                    lastNode.undirectedAdd(newNode);
+                    // lastNode.undirectedAdd(newNode);
+                    undirectedAddNode(lastNode, newNode, true);
                 }
             } else if (p.key == keys.random.dir || p.key == keys.random.und) {
                 if (p.key == keys.random.dir) {
-                    randomNode(graph).add(newNode);
+                    // randomNode(graph).add(newNode);
+                    addNode(randomNode(graph), newNode, true);
                 } else {
-                    randomNode(graph).undirectedAdd(newNode);
+                    // randomNode(graph).undirectedAdd(newNode);
+                    undirectedAddNode(randomNode(graph), newNode, true);
                 }
             }
             lastNode = newNode;
@@ -261,6 +306,23 @@ const p5_graphVisualization = new p5(p => {
         } else {
             endTraversal();
         }
+    }
+
+    function resetGraph() {
+        while (!undoStack.empty()) {
+            undoStack.pop();
+        }
+
+        lastNode = new NodeDot(p.width / 2, p.height / 2, 0);
+        graph = new Graph(lastNode.graphNode);
+    }
+
+    function addNode(parent, child, isNew) {
+        undoStack.push({parent, child, isNew, isDirected: true});
+    }
+
+    function undirectedAddNode(parent, child, isNew) {
+        undoStack.push({parent, child, isNew, isDirected: false});
     }
 
     function randomNode(graph) {
@@ -352,6 +414,10 @@ const p5_graphVisualization = new p5(p => {
             for (const node of this.nodes) {
                 this.add(node);
             }
+        }
+
+        remove(item) {
+            this.nodes = this.nodes.filter(x => x != item);
         }
 
         contains(node) {
@@ -457,7 +523,7 @@ const p5_graphVisualization = new p5(p => {
 
         *getGraphNodes() {
             for (const nodeDot of this.nodeDots) {
-                yield nodeDog.graphNode;
+                yield nodeDot.graphNode;
             }
         }
 
@@ -480,6 +546,16 @@ const p5_graphVisualization = new p5(p => {
         undirectedAdd(node) {
             this.add(node);
             node.add(this);
+        }
+
+        remove(node) {
+            this.nodeDots = this.nodeDots.filter(x => x != node);
+            this.graphNode.remove(node.graphNode);
+        }
+
+        undirectedRemove(node) {
+            this.remove(node);
+            node.remove(this);
         }
 
         update(globalDots, left, top, width, height) {
